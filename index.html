@@ -26,7 +26,28 @@
         .name-text span { font-size: 10px; font-weight: 500; color: #8e8e93; letter-spacing: 1px; margin-top: 2px; }
 
         /* --- SCROLLABLE CONTENT AREA --- */
-        #content-area { flex-grow: 1; overflow-y: auto; padding: 100px 20px 120px 20px; scroll-behavior: smooth; }
+        #content-area { flex-grow: 1; overflow-y: auto; padding: 140px 20px 120px 20px; scroll-behavior: smooth; }
+
+        /* --- GLOBAL SEARCH BAR (shown on every tab) --- */
+        .search-wrap { position: absolute; top: 78px; left: 20px; right: 20px; z-index: 60; }
+        .search-bar { display: flex; align-items: center; gap: 8px; height: 46px; padding: 0 14px; border-radius: 50px; background: rgba(255,255,255,.78); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); border: 1px solid rgba(255,255,255,.95); box-shadow: 0 4px 16px rgba(0,0,0,.08), inset 0 1px 0 rgba(255,255,255,.95); transition: border-color .2s ease; }
+        .search-bar:focus-within { border-color: #007aff; }
+        .search-icon { width: 18px; height: 18px; fill: #8e8e93; flex-shrink: 0; }
+        #site-search { flex: 1; min-width: 0; border: none; outline: none; background: transparent; font-size: 15px; color: #1c1c1e; }
+        #site-search::-webkit-search-cancel-button { -webkit-appearance: none; display: none; }
+        .search-clear { display: none; width: 22px; height: 22px; border-radius: 50%; border: none; background: #c7c7cc; color: #fff; font-size: 16px; line-height: 1; justify-content: center; align-items: center; cursor: pointer; padding: 0; flex-shrink: 0; }
+        .search-results { display: none; margin-top: 8px; max-height: 55vh; overflow-y: auto; background: #fff; border-radius: 14px; border: 1px solid rgba(60,60,67,.08); box-shadow: 0 10px 30px rgba(0,0,0,.15); }
+        .search-results.open { display: block; }
+        .search-item { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-bottom: 1px solid #e5e5ea; cursor: pointer; }
+        .search-item:last-child { border-bottom: none; }
+        .search-item:hover, .search-item:active { background: #f2f2f7; }
+        .search-item-text { flex: 1; min-width: 0; }
+        .search-item-title { font-size: 15px; font-weight: 600; color: #1c1c1e; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .search-item-sub { font-size: 12px; color: #8e8e93; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; }
+        .search-tag { font-size: 11px; font-weight: 600; color: #007aff; background: rgba(0,122,255,.1); padding: 4px 8px; border-radius: 20px; white-space: nowrap; }
+        .search-empty { padding: 16px; text-align: center; color: #8e8e93; font-size: 14px; }
+        .search-hit { animation: searchFlash 1.8s ease; }
+        @keyframes searchFlash { 0%, 30% { background: rgba(0,122,255,.18); } 100% { background: #fff; } }
         .page { display: none; }
         .page.active { display: block; animation: fadeIn 0.3s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
@@ -92,10 +113,18 @@
         .ios-modal-input::placeholder { color: #888; }
         .ios-modal-textarea { width: 100%; min-height: 110px; padding: 12px 14px; margin-bottom: 10px; background: rgba(255,255,255,0.5); border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; font-size: 13px; font-family: Menlo, Consolas, monospace; color: #000; outline: none; resize: vertical; text-align: left; }
         .ios-modal-textarea:focus { border-color: #007aff; background: #fff; }
-        .expr-item { flex-direction: column; align-items: stretch; gap: 10px; cursor: pointer; }
-        .expr-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-        .expr-title { font-size: 16px; font-weight: 600; color: #1c1c1e; word-break: break-word; }
-        .expr-code { margin: 0; padding: 12px 14px; background: #1c1c1e; color: #00e5a0; border-radius: 10px; font-family: Menlo, Consolas, monospace; font-size: 12px; line-height: 1.5; white-space: pre-wrap; word-break: break-word; max-height: 240px; overflow: auto; cursor: text; user-select: text; -webkit-user-select: text; }
+        .expr-text { font-family: Menlo, Consolas, monospace; font-size: 12px; }
+        .expr-code { margin-top: 6px; padding: 10px 12px; background: #2b2b2b; border: 1px solid #3c3f41; border-radius: 8px; color: #a9b7c6; font-family: Menlo, Consolas, monospace; font-size: 12px; line-height: 1.5; white-space: pre-wrap; word-break: break-word; max-height: 220px; overflow: auto; min-width: 0; }
+        /* Java / IntelliJ-style token colors */
+        .tk-keyword { color: #cc7832; font-weight: 600; }
+        .tk-string  { color: #6a8759; }
+        .tk-number  { color: #6897bb; }
+        .tk-comment { color: #808080; font-style: italic; }
+        .tk-func    { color: #ffc66d; }
+        .tk-var     { color: #9876aa; }
+        .tk-type    { color: #4ec9b0; font-weight: 600; }
+        .ios-list-item:has(.expr-code) { align-items: flex-start; }
+        .ios-list-item:has(.expr-code) .ios-list-actions { align-self: center; }
         .copy-toast { position: fixed; left: 50%; bottom: 110px; transform: translateX(-50%) translateY(20px); background: rgba(28,28,30,0.9); color: #fff; padding: 10px 18px; border-radius: 20px; font-size: 14px; font-weight: 500; opacity: 0; pointer-events: none; transition: opacity .25s ease, transform .25s ease; z-index: 200; white-space: nowrap; }
         .copy-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
         .ios-modal-select { width: 100%; padding: 12px 14px; margin-bottom: 10px; background: rgba(255, 255, 255, 0.5); border: 1px solid rgba(0, 0, 0, 0.1); border-radius: 8px; font-size: 14px; color: #000; outline: none; appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path fill='%23007aff' d='M6 8L2 4h8z'/></svg>"); background-repeat: no-repeat; background-position: right 14px center; background-size: 12px; }
@@ -172,6 +201,15 @@
         </div>
     </header>
 
+    <div class="search-wrap" id="search-wrap">
+        <div class="search-bar">
+            <svg class="search-icon" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+            <input type="search" id="site-search" placeholder="Search projects, tutorials, socials…" autocomplete="off" enterkeyhint="search">
+            <button class="search-clear" id="search-clear" type="button" aria-label="Clear search">×</button>
+        </div>
+        <div class="search-results" id="search-results"></div>
+    </div>
+
     <div id="content-area">
         <main id="home" class="page active">
             <div class="ios-list-header">Social Media</div>
@@ -196,7 +234,7 @@
 
         <main id="expressions" class="page">
             <h1 class="page-title">Expressions</h1>
-            <p class="placeholder-text">Tap an expression or its copy button to copy it.</p>
+            <p class="placeholder-text">Tap an expression to copy it.</p>
             <div class="ios-list-header">All Expressions</div>
             <div id="expressions-container" class="ios-list-group"></div>
         </main>
@@ -486,6 +524,26 @@
         });
     }
 
+    // Java-style syntax highlighting: keywords, strings, numbers, comments, functions, variables, types
+    const JAVA_KEYWORDS = new Set(['abstract','boolean','break','byte','case','catch','char','class','const','continue','default','do','double','else','enum','extends','final','finally','float','for','function','if','implements','import','instanceof','int','interface','let','long','new','null','package','private','protected','public','return','short','static','super','switch','this','throw','throws','true','false','try','var','void','while','undefined']);
+    function highlightJava(src) {
+        const re = /(\/\/[^\n]*|\/\*[\s\S]*?\*\/)|("(?:\\.|[^"\\\n])*"|'(?:\\.|[^'\\\n])*')|(\b\d+(?:\.\d+)?[fFdDlL]?\b)|([A-Za-z_$][\w$]*)(?=\s*\()|([A-Za-z_$][\w$]*)/g;
+        let out = '', last = 0, m;
+        while ((m = re.exec(src)) !== null) {
+            out += esc(src.slice(last, m.index));
+            const t = m[0];
+            let cls;
+            if (m[1]) cls = 'tk-comment';
+            else if (m[2]) cls = 'tk-string';
+            else if (m[3]) cls = 'tk-number';
+            else if (m[4]) cls = JAVA_KEYWORDS.has(t) ? 'tk-keyword' : 'tk-func';
+            else cls = JAVA_KEYWORDS.has(t) ? 'tk-keyword' : (/^[A-Z]/.test(t) ? 'tk-type' : 'tk-var');
+            out += `<span class="${cls}">${esc(t)}</span>`;
+            last = re.lastIndex;
+        }
+        return out + esc(src.slice(last));
+    }
+
     function renderExpressions() {
         const container = document.getElementById('expressions-container');
         container.innerHTML = '';
@@ -498,23 +556,24 @@
 
         expressions.forEach(expr => {
             const item = document.createElement('div');
-            item.className = 'ios-list-item expr-item';
+            item.className = 'ios-list-item';
             item.dataset.id = expr.id;
             if (isAdmin) addLongPressListeners(item, 'expression');
 
             item.innerHTML = `
-                <div class="expr-head">
-                    <div class="expr-title">${esc(expr.label)}</div>
+                <div class="ios-list-icon" style="background:#1c1c1e;color:#00e5a0;font-weight:700;font-size:13px;font-family:Menlo,Consolas,monospace;">fx</div>
+                <div class="ios-list-content">
+                    <div class="ios-list-title">${esc(expr.label)}</div>
+                    <pre class="expr-code">${highlightJava(expr.text)}</pre>
+                </div>
+                <div class="ios-list-actions">
                     <button class="ios-download-btn" title="Copy">
                         <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
                     </button>
                 </div>
-                <pre class="expr-code">${esc(expr.text)}</pre>
             `;
-            item.addEventListener('click', (e) => {
+            item.addEventListener('click', () => {
                 if (Date.now() - lastDeleteOpen < 600) return; // ignore the click that ends a long-press
-                // if the viewer is highlighting part of the code, let them select instead of copying
-                if (e.target.closest('.expr-code') && window.getSelection && window.getSelection().toString()) return;
                 copyText(expr.text);
             });
             container.appendChild(item);
@@ -811,6 +870,85 @@
         document.getElementById('nav-' + pageId).classList.add('active');
         document.getElementById('content-area').scrollTop = 0;
     }
+
+    // =========================================================
+    // --- GLOBAL SEARCH ---
+    // =========================================================
+    const searchInput   = document.getElementById('site-search');
+    const searchResults = document.getElementById('search-results');
+    const searchClear   = document.getElementById('search-clear');
+    const searchWrap    = document.getElementById('search-wrap');
+    const SEARCH_PAGES = {
+        proyek:      { label: 'Project',    container: 'projects-container' },
+        tutorials:   { label: 'Tutorial',   container: 'tutorials-container' },
+        home:        { label: 'Social',     container: 'social-list' },
+        expressions: { label: 'Expression', container: 'expressions-container' }
+    };
+
+    function collectSearchItems() {
+        const items = [];
+        projects.forEach(p => items.push({ page: 'proyek', id: p.id, title: p.name, sub: 'Size: ' + (p.size || '—') }));
+        tutorials.forEach(t => items.push({ page: 'tutorials', id: t.id, title: t.name, sub: 'TikTok tutorial' }));
+        socials.forEach(s => items.push({ page: 'home', id: s.id, title: s.platform, sub: s.username || '' }));
+        expressions.forEach(e => items.push({ page: 'expressions', id: e.id, title: e.label, sub: 'Expression' }));
+        return items;
+    }
+
+    function runSearch() {
+        const q = searchInput.value.trim().toLowerCase();
+        searchClear.style.display = searchInput.value ? 'flex' : 'none';
+        if (!q) { searchResults.classList.remove('open'); searchResults.innerHTML = ''; return; }
+
+        const hits = collectSearchItems().filter(i => (i.title + ' ' + i.sub).toLowerCase().includes(q));
+        searchResults.innerHTML = hits.length
+            ? hits.map(h => `
+                <div class="search-item" data-page="${h.page}" data-id="${esc(h.id)}">
+                    <div class="search-item-text">
+                        <div class="search-item-title">${esc(h.title)}</div>
+                        <div class="search-item-sub">${esc(h.sub)}</div>
+                    </div>
+                    <span class="search-tag">${SEARCH_PAGES[h.page].label}</span>
+                </div>`).join('')
+            : `<div class="search-empty">No results for "${esc(searchInput.value.trim())}"</div>`;
+        searchResults.classList.add('open');
+    }
+
+    function closeSearch() {
+        searchInput.value = '';
+        searchResults.classList.remove('open');
+        searchResults.innerHTML = '';
+        searchClear.style.display = 'none';
+        searchInput.blur();
+    }
+
+    function openSearchResult(page, id) {
+        closeSearch();
+        navigateTo(page);
+        const el = document.querySelector('#' + SEARCH_PAGES[page].container + ' [data-id="' + CSS.escape(id) + '"]');
+        if (el) {
+            el.scrollIntoView({ block: 'center', behavior: 'smooth' });
+            el.classList.add('search-hit');
+            setTimeout(() => el.classList.remove('search-hit'), 1800);
+        }
+    }
+
+    searchInput.addEventListener('input', runSearch);
+    searchInput.addEventListener('focus', () => { if (searchInput.value.trim()) searchResults.classList.add('open'); });
+    searchInput.addEventListener('keydown', e => {
+        if (e.key === 'Escape') closeSearch();
+        if (e.key === 'Enter') {
+            const first = searchResults.querySelector('.search-item');
+            if (first) openSearchResult(first.dataset.page, first.dataset.id);
+        }
+    });
+    searchClear.addEventListener('click', () => { closeSearch(); searchInput.focus(); });
+    searchResults.addEventListener('click', e => {
+        const item = e.target.closest('.search-item');
+        if (item) openSearchResult(item.dataset.page, item.dataset.id);
+    });
+    document.addEventListener('click', e => {
+        if (!searchWrap.contains(e.target)) searchResults.classList.remove('open');
+    });
 </script>
 
 </body>
